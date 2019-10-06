@@ -1,0 +1,9 @@
+.vs/*
+MyNotes/MyNotes/bin/*
+MyNotes/MyNotes/obj/*
+MyNotes/MyNotes.Android/bin/*
+MyNotes/MyNotes.Android/obj/*
+MyNotes/MyNotes.iOS/bin/*
+MyNotes/MyNotes.iOS/obj/*
+MyNotes/MyNotes.UWP/bin/*
+MyNotes/MyNotes.UWP/obj/*
