@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MyNotes.Views;
+using System;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -9,7 +10,6 @@ namespace MyNotes
         public App()
         {
             InitializeComponent();
-
             MainPage = new MainPage();
         }
 
