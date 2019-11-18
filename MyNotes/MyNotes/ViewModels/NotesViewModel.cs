@@ -1,12 +1,15 @@
 ﻿
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Windows.Input;
+using System.Linq;
 using MyNotes.Models;
 using MyNotes.Utilities;
+using MyNotes.Views;
 
 namespace MyNotes.ViewModels
 {
-    public class NotesViewModel : NotificationObject
+    public class NotesViewModel : ViewModelBase
     {
         #region Constructor
         /// <summary>
@@ -14,9 +17,10 @@ namespace MyNotes.ViewModels
         /// </summary>
         public NotesViewModel()
         {
-            AllNotes = new ObservableCollection<Note>();
+            AllNotes = new ObservableCollection<Note>(DataService.Instance.Notes);
             NewNoteCommand = new DelegateCommand(CreateNewNote, CanCreateNewNote);
             EditNoteCommand = new DelegateCommand(EditNote, CanEditNote);
+            DataService.Instance.PropertyChanged += OnDataServiceChanged;
         }
         #endregion
 
@@ -45,7 +49,7 @@ namespace MyNotes.ViewModels
         /// <summary>
         /// All notes collection
         /// </summary>
-        ObservableCollection<Note> AllNotes
+        public ObservableCollection<Note> AllNotes
         {
             get;
             set;
@@ -85,9 +89,10 @@ namespace MyNotes.ViewModels
         /// Handle the logic to create a new note
         /// </summary>
         /// <param name="param"></param>
-        private void CreateNewNote(object param)
+        async private void CreateNewNote(object param)
         {
-
+            var newNote = new NewNote();
+            await Navigation.PushAsync(newNote);
         }
 
         /// <summary>
@@ -104,9 +109,30 @@ namespace MyNotes.ViewModels
         /// Handle the logic to edit note
         /// </summary>
         /// <param name="param"></param>
-        private void EditNote(object param)
+        async private void EditNote(object param)
         {
+            var editNote = new NewNote();
+            editNote.SetNote(SelectedNote);
+            await Navigation.PushAsync(editNote);
+        }
+        #endregion
 
+        #region Methods
+        /// <summary>
+        /// Update the notes when Notes event is triggered
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnDataServiceChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if(e.PropertyName == "Notes")
+            {
+                AllNotes.Clear();
+                foreach(Note n in DataService.Instance.Notes)
+                {
+                    AllNotes.Add(n);
+                }
+            }
         }
         #endregion
     }

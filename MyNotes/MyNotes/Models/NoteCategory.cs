@@ -54,6 +54,15 @@ namespace MyNotes.Models
             }
         }
 
+        /// <summary>
+        /// Override object.ToString() method
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
+        {
+            return Name;
+        }
+
         #endregion
     }
 }

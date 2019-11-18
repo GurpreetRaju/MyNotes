@@ -1,13 +1,25 @@
 ﻿using MyNotes.Models;
 using MyNotes.Utilities;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows.Input;
+using Xamarin.Forms;
 
 namespace MyNotes.ViewModels
 {
-    public class NewNoteViewModel : NotificationObject
+    public class NewNoteViewModel : ViewModelBase
     {
         #region Properties
+        /// <summary>
+        /// Id of note, null if its a new note
+        /// </summary>
+        public int? NoteId
+        {
+            get; 
+            set;
+        }
+
         private string m_noteTitle;
         /// <summary>
         /// Title for note
@@ -63,20 +75,28 @@ namespace MyNotes.ViewModels
             }
         }
 
+        private List<NoteCategory> m_categoryList;
         /// <summary>
         /// Collection of note categories
         /// </summary>
-        public ObservableCollection<NoteCategory> CategoryList 
-        { 
-            get; 
-            set; 
+        public List<NoteCategory> CategoryList 
+        {
+            get
+            {
+                return m_categoryList;
+            }
+            set
+            {
+                m_categoryList = value;
+                RaisePropertyChanged(nameof(CategoryList));
+            }
         }
         #endregion
 
         #region Constructor
         public NewNoteViewModel()
-        {
-            CategoryList = new ObservableCollection<NoteCategory>();
+        { 
+            //SelectedCategory = CategoryList?.First();
             SaveNoteCommand = new DelegateCommand(SaveNote, CanSaveNote);
         }
         #endregion
@@ -103,9 +123,26 @@ namespace MyNotes.ViewModels
         /// <summary>
         /// Save note handler
         /// </summary>
-        private void SaveNote(object param)
+        async private void SaveNote(object param)
         {
+            var note = new Note()
+            {
+                Title = NoteTitle,
+                Content = NoteBody,
+                Category = SelectedCategory
+            };
 
+            if (NoteId.HasValue)
+            {
+                note.Id = NoteId.Value;
+                DataService.Instance.UpdateNote(note);
+            }
+            else
+            {
+                DataService.Instance.CreateNote(note);
+            }
+
+            await Navigation.PopAsync();
         }
         #endregion
     }

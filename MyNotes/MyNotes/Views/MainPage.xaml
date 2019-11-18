@@ -5,9 +5,27 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
              x:Class="MyNotes.Views.MainPage">
-
+    <ContentPage.Resources>
+        <Style x:Key="NoteGridStyle" TargetType="Grid">
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="Margin" Value="2"/>
+        </Style>
+    </ContentPage.Resources>
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="New" FlexLayout.AlignSelf="Center" Command="{Binding NewNoteCommand}"/>
+    </ContentPage.ToolbarItems>
     <StackLayout>
-        <ListView ItemsSource="{Binding AllNotes}" />
+        <ListView ItemsSource="{Binding AllNotes, UpdateSourceEventName=PropertyChanged}" SelectionMode="None">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <Grid Style="{x:StaticResource NoteGridStyle}" BackgroundColor="{Binding Category.Theme.HeaderColor}">
+                            <Label Text="{Binding Title}" TextColor="{Binding Category.Theme.FontColor}"/>
+                        </Grid>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
     </StackLayout>
 
 </ContentPage>

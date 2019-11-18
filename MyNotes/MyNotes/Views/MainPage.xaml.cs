@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using MyNotes.ViewModels;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace MyNotes.Views
@@ -16,6 +12,8 @@ namespace MyNotes.Views
         public MainPage()
         {
             InitializeComponent();
+            BindingContext = new NotesViewModel();
+            (BindingContext as ViewModelBase).Navigation = Navigation;
         }
     }
 }

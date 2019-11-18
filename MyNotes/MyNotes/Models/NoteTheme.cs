@@ -1,5 +1,7 @@
 ﻿
-namespace MyNotes.Utilities
+using Xamarin.Forms;
+
+namespace MyNotes.Models
 {
     public class NoteTheme
     {
@@ -16,7 +18,7 @@ namespace MyNotes.Utilities
         /// <summary>
         /// Color code for header
         /// </summary>
-        public string HeaderColorCode
+        public Color HeaderColor
         {
             get;
             set;
@@ -25,7 +27,7 @@ namespace MyNotes.Utilities
         /// <summary>
         /// Color code for body
         /// </summary>
-        public string BodyColorCode 
+        public Color BodyColor
         { 
             get; 
             set; 
@@ -34,7 +36,7 @@ namespace MyNotes.Utilities
         /// <summary>
         /// 
         /// </summary>
-        public string FontColorCode 
+        public Color FontColor 
         { 
             get; 
             set; 
